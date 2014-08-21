@@ -7,13 +7,22 @@ import org.apache.http.client._
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
+import scala.collection.immutable.HashMap
 
+/**
+ *
+ * A simple http client that offers post and authentication for (primarily JSON) in scala
+ *
+ */
 class SimpleHttpClient {
 
-  def sendPost(url: String, paylod: String, contentType: ContentType.Value): Result = {
+  def sendPost(url: String, paylod: String, contentType: ContentType.Value, headers: Map[String, String]): Result = {
 
     val post = new HttpPost(url)
-
+    headers.foreach {
+      case (name, value) =>
+        post.addHeader(name, value)
+    }
     val input = new StringEntity(paylod);
     input.setContentType(contentType.toString);
     post.setEntity(input);
@@ -35,14 +44,14 @@ class SimpleHttpClient {
   }
 
   def authenticate(url: String, auth: Auth, formatableJSon: String): String = {
-    sendPost(url, (formatableJSon format (auth.username, auth.password)), ContentType.JSON).response
+    sendPost(url, (formatableJSon format (auth.username, auth.password)), ContentType.JSON, new HashMap).response
   }
 
-  case class Auth(username: String, password: String)
-
-  case class Result(status: Int, response: String)
-
 }
+
+case class Auth(username: String, password: String)
+
+case class Result(status: Int, response: String)
 
 object ContentType extends Enumeration {
   type ContentType = Value
