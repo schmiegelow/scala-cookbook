@@ -5,9 +5,14 @@ import org.apache.commons._
 import org.apache.http._
 import org.apache.http.client._
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
+import java.util.ArrayList
+import org.apache.http.message.BasicNameValuePair
+import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.entity.StringEntity
 import scala.collection.immutable.HashMap
+import org.apache.http.client.methods.HttpPut
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
 
 /**
  *
@@ -16,14 +21,26 @@ import scala.collection.immutable.HashMap
  */
 class SimpleHttpClient {
 
-  def sendPost(url: String, paylod: String, contentType: ContentType.Value, headers: Map[String, String]): Result = {
+  def sendPost(url: String, payload: String, contentType: ContentType.Value, headers: Map[String, String]): Result = {
 
     val post = new HttpPost(url)
+    send(payload, contentType, headers, post)
+
+  }
+
+  def sendPut(url: String, payload: String, contentType: ContentType.Value, headers: Map[String, String]): Result = {
+
+    val put = new HttpPut(url)
+    send(payload, contentType, headers, put)
+
+  }
+
+  private def send(payload: String, contentType: ContentType.Value, headers: Map[String, String], post: HttpEntityEnclosingRequestBase): Result = {
     headers.foreach {
       case (name, value) =>
         post.addHeader(name, value)
     }
-    val input = new StringEntity(paylod);
+    val input = new StringEntity(payload);
     input.setContentType(contentType.toString);
     post.setEntity(input);
 
@@ -40,7 +57,6 @@ class SimpleHttpClient {
     }
 
     Result(response.getStatusLine().getStatusCode(), buf.toString());
-
   }
 
   def authenticate(url: String, auth: Auth, formatableJSon: String): String = {
