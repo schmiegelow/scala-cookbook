@@ -1,16 +1,21 @@
 package io.criticality.cookbook.scala
 
 import java.io._
+
 import org.apache.commons._
 import org.apache.http._
 import org.apache.http.client._
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.DefaultHttpClient
+
 import java.util.ArrayList
+
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.entity.StringEntity
+
 import scala.collection.immutable.HashMap
+
 import org.apache.http.client.methods.HttpPut
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
 
