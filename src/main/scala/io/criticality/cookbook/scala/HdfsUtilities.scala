@@ -59,6 +59,23 @@ object HdfsUtilities {
     local
   }
 
+  def readFile(remote: String): String = {
+    val path = new Path(remote)
+    val rd = new BufferedReader(new InputStreamReader(fileSystem.open(path)))
+    val wt = new StringWriter()
+    var line: String = rd.readLine
+    while (line != null) {
+      wt.write(line + "\n");
+      System.out.println(line + "\n")
+      line = rd.readLine
+    }
+    rd.close
+    wt.flush
+    val result = wt.toString
+    wt.close
+    result
+  }
+
   def createFolder(folderPath: String): Unit = {
     val path = new Path(folderPath)
     if (!fileSystem.exists(path)) {
