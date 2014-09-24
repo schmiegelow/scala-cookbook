@@ -3,7 +3,6 @@ package io.criticality.cookbook.scala
 import org.apache.hadoop.conf._
 import org.apache.hadoop.fs._
 import org.apache.hadoop.security.UserGroupInformation
-
 import java.io.File
 import java.io.BufferedWriter
 import java.io.BufferedOutputStream
@@ -11,9 +10,9 @@ import java.io.BufferedReader
 import java.io.FileWriter
 import java.io.InputStreamReader
 import java.security.PrivilegedExceptionAction
-
 import scala.io.Source
 import scala.collection.JavaConversions._
+import java.io.StringWriter
 
 /**
  * A set of utility classes for HDFS file system access
@@ -86,7 +85,38 @@ object HdfsUtilities {
     local
   }
 
-  def createFolder(folderPath: String): Boolean = {
+  /**
+   * read a file to a String
+   *
+   */
+  def readFile(remote: String): String = {
+    val path = new Path(remote)
+
+    val wt = new StringWriter()
+
+    val ugi = UserGroupInformation.createRemoteUser(getHdfsUser)
+    transferCredentials(UserGroupInformation.getCurrentUser(), ugi)
+    ugi.doAs(new PrivilegedExceptionAction[Unit] {
+
+      def run: Unit = {
+        val rd = new BufferedReader(new InputStreamReader(fileSystem.open(path)))
+        var line: String = rd.readLine
+        while (line != null) {
+          wt.write(line + "\n");
+          line = rd.readLine
+        }
+        rd.close
+      }
+
+    })
+    wt.flush
+
+    val result = wt.toString
+    wt.close
+    result
+  }
+
+  def createFolder(folderPath: String): Unit = {
     val path = new Path(folderPath)
     var sucess = false
     val ugi = UserGroupInformation.createRemoteUser(getHdfsUser)
