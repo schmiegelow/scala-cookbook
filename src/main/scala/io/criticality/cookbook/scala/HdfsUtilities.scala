@@ -13,6 +13,7 @@ import java.security.PrivilegedExceptionAction
 import scala.io.Source
 import scala.collection.JavaConversions._
 import java.io.StringWriter
+import scala.collection.mutable.ListBuffer
 
 /**
  * A set of utility classes for HDFS file system access
@@ -160,6 +161,29 @@ object HdfsUtilities {
     })
     local
 
+  }
+
+  /**
+   * retrieves the entire output of a map reduce operation designated by the @param remote folder
+   */
+  def listFiles(remote: String): List[String] = {
+
+    val status = List.fromArray(fileSystem.listStatus(new Path(remote)))
+    val local = new ListBuffer[String]
+    System.out.println("Found " + status.size + " in " + remote);
+    val ugi = UserGroupInformation.createRemoteUser(getHdfsUser)
+    transferCredentials(UserGroupInformation.getCurrentUser(), ugi)
+    ugi.doAs(new PrivilegedExceptionAction[Unit] {
+      def run: Unit = {
+        status.foreach(item => {
+          if (item.getPath().toString().contains("part")) {
+            local += item.getPath().toString()
+          }
+        })
+
+      }
+    })
+    local.toList
   }
 
   def getHdfsUser(): String = {
