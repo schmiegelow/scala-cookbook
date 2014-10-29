@@ -164,7 +164,7 @@ object HdfsUtilities {
   }
 
   /**
-   * retrieves the entire output of a map reduce operation designated by the @param remote folder
+   * retrieves the list of part* files of a map reduce operation designated by the @param remote folder
    */
   def listFiles(remote: String): List[String] = {
 
