@@ -1,0 +1,16 @@
+{
+  "type"   : "record",
+  "name"   : "io.criticality.app.value.ExchangeRate",
+  "version": "1",
+  "doc"    : "A Exchange rate Record",
+  "fields" : [
+      {
+        "name" : "date",
+        "type" : "string"
+      },
+    {
+      "name" : "exchangeRate",
+      "type" : "float"
+    }
+  ]
+}

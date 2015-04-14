@@ -1,19 +1,15 @@
-package io.criticality.cookbook.scala
+package io.criticality.cookbook.scala.hadoop
+
+import java.io.{BufferedOutputStream, BufferedReader, BufferedWriter, File, FileWriter, InputStreamReader, StringWriter}
+import java.security.PrivilegedExceptionAction
 
 import org.apache.hadoop.conf._
 import org.apache.hadoop.fs._
 import org.apache.hadoop.security.UserGroupInformation
-import java.io.File
-import java.io.BufferedWriter
-import java.io.BufferedOutputStream
-import java.io.BufferedReader
-import java.io.FileWriter
-import java.io.InputStreamReader
-import java.security.PrivilegedExceptionAction
-import scala.io.Source
+
 import scala.collection.JavaConversions._
-import java.io.StringWriter
 import scala.collection.mutable.ListBuffer
+import scala.io.Source
 
 /**
  * A set of utility classes for HDFS file system access
