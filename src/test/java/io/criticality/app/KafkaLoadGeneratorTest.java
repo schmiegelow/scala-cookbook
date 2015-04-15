@@ -1,6 +1,7 @@
 package io.criticality.app;
 
 import io.criticality.cookbook.scala.kafka.KafkaProducer;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,13 @@ import io.criticality.app.value.ExchangeRate;
 public class KafkaLoadGeneratorTest {
 
 
-        @Autowired
+    @BeforeClass
+    public static void init() {
+        System.setProperty("broker", "localhost:9092");
+    }
+
+
+    @Autowired
         KafkaLoadGenerator loadGenerator;
         @Autowired
         @Qualifier("recordProducer")
