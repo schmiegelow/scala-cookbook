@@ -1,7 +1,8 @@
 scala-cookbook
 ==============
 
-A collection of small recipes of scala utility classes
+A collection of small recipes and scala utility classes, as well as java classes using traditional frameworks
+to interact with scala.
 
 
 Kafka load gen
