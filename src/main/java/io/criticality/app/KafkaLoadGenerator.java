@@ -1,5 +1,10 @@
 package io.criticality.app;
 
+import io.criticality.cookbook.scala.kafka.KafkaProducer;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -17,6 +22,12 @@ import io.criticality.app.value.ExchangeRate;
  */
 @Service
 public class KafkaLoadGenerator {
+
+    private Logger LOG = LoggerFactory.getLogger(KafkaLoadGenerator.class);
+
+    @Autowired
+    @Qualifier("recordProducer")
+    KafkaProducer producer;
 
     public List<ExchangeRate> process(File file) {
         List<ExchangeRate> results = new ArrayList<>();
@@ -38,6 +49,14 @@ public class KafkaLoadGenerator {
         }
         return results;
 
+    }
+
+    public void dispatch(List<ExchangeRate> records) {
+        for (int i = 0; i < records.size(); i++) {
+            ExchangeRate record = records.get(i);
+            producer.send(record.toString(), "1");
+        }
+        LOG.debug(String.format("dispatched %s records", records.size()));
     }
 
     public ExchangeRate parseLine(String line) {

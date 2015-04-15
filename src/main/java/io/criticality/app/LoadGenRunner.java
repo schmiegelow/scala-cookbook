@@ -1,11 +1,13 @@
 package io.criticality.app;
 
+import io.criticality.app.value.ExchangeRate;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by e.schmiegelow on 14/04/15.
@@ -41,7 +43,8 @@ public class LoadGenRunner {
 
         try {
 
-            loadGenerator.process(new File(file));
+            List<ExchangeRate> rates = loadGenerator.process(new File(file));
+            loadGenerator.dispatch(rates);
             if (delay > 0)
                 Thread.sleep(delay);
 
