@@ -28,7 +28,7 @@
  -->
     <bean class="io.criticality.cookbook.scala.kafka.KafkaProducer" id="recordProducer">
         <constructor-arg type="java.lang.String" value="records"/>
-        <constructor-arg type="java.lang.String" value="${broker}"/>
+        <constructor-arg type="java.lang.String" value="localhost:9092"/>
         <constructor-arg type="java.lang.String" value="importer"/>
     </bean>
 
