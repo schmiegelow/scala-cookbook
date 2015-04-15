@@ -33,7 +33,7 @@ public class LoadGenRunner {
         optDel.setRequired(true);
         options.addOption(optDel);
 
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml");
         loadGenerator = ctx.getBean(KafkaLoadGenerator.class);
     }
 
