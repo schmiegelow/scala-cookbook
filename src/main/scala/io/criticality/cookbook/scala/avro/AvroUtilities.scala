@@ -1,6 +1,6 @@
 package io.criticality.cookbook.scala.avro
 
-import java.io.File
+import java.io.{ByteArrayInputStream, File}
 import org.apache.avro.Schema
 import org.apache.avro.file.DataFileWriter
 import org.apache.avro.specific.SpecificDatumWriter
@@ -23,6 +23,17 @@ class AvroUtilities {
   def readAvro[A <: SpecificRecordBase](path: String, schema: Schema): Seq[A] = {
     val datum = new SpecificDatumReader[A](schema);
     val reader = new DataFileReader[A](new File(path), datum);
+    val results = Seq.newBuilder[A]
+    while (reader.hasNext) {
+      results += reader.next()
+    }
+    results.result
+  }
+
+  def readAvro[A <: SpecificRecordBase](input: Array[Byte], schema: Schema): Seq[A] = {
+    val bais = new ByteArrayInputStream(input);
+    val datum = new SpecificDatumReader[A](schema);
+    val reader = new DataFileReader[A](input, datum);
     val results = Seq.newBuilder[A]
     while (reader.hasNext) {
       results += reader.next()
