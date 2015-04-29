@@ -6,7 +6,6 @@
 
 	<version>0.0.1-SNAPSHOT</version>
 
-
 		<properties>
 			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 			<spring.version>3.2.13.RELEASE</spring.version>
@@ -126,7 +125,21 @@
 			<artifactId>avro-mapred</artifactId>
 			<version>1.7.6</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.flume</groupId>
+			<artifactId>flume-ng-sdk</artifactId>
+			<version>${flume.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>com.twitter</groupId>
 			<artifactId>maple</artifactId>
