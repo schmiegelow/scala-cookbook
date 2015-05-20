@@ -16,7 +16,7 @@
 			<spark.version>1.2.0-cdh5.3.1</spark.version>
 			<kafka.version>0.8.2.1</kafka.version>
 			<scala.version>2.11.5</scala.version>
-			<scalding.version>0.13.1</scalding.version>
+			<scalding.version>0.14.0</scalding.version>
 			<httpcomponents.version>4.4.1</httpcomponents.version>
 		</properties>
 
