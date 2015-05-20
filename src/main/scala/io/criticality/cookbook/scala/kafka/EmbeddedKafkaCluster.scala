@@ -9,6 +9,8 @@ import java.util.Collections
 import java.util.Properties
 
 /**
+ * A scala implementation of https://gist.github.com/vmarcinko/e4e58910bcb77dac16e9
+ *
  * Created by e.schmiegelow on 20/05/15.
  */
 case class EmbeddedKafkaCluster(zkConnection: String, baseProperties: Properties, ports: List[Integer]) {
