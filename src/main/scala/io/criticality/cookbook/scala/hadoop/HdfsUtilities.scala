@@ -133,7 +133,7 @@ object HdfsUtilities {
    */
   def getOutput(remote: String, local: String): String = {
 
-    val status = List.fromArray(fileSystem.listStatus(new Path(remote)))
+    val status = fileSystem.listStatus(new Path(remote)).toList
     System.out.println("Found " + status.size + " in " + remote);
     val wt = new BufferedWriter(new FileWriter(local))
     val ugi = UserGroupInformation.createRemoteUser(getHdfsUser)
@@ -164,7 +164,7 @@ object HdfsUtilities {
    */
   def listFiles(remote: String): List[String] = {
 
-    val status = List.fromArray(fileSystem.listStatus(new Path(remote)))
+    val status = fileSystem.listStatus(new Path(remote)).toList
     val local = new ListBuffer[String]
     System.out.println("Found " + status.size + " in " + remote);
     val ugi = UserGroupInformation.createRemoteUser(getHdfsUser)
