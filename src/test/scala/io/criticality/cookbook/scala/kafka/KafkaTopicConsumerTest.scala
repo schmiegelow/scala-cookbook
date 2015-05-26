@@ -8,6 +8,8 @@ import org.junit.Test
  */
 class KafkaTopicConsumerTest {
 
+  val run = false
+
   val consumer = KafkaTopicConsumer("records", 1, "test01", "localhost:2181")
 
   def readTopic(stream : KafkaStream[Array[Byte], Array[Byte]]): Unit = {
@@ -16,19 +18,21 @@ class KafkaTopicConsumerTest {
     })
   }
 
-  class Runner extends Thread {
-    override def run(): Unit = {
-      consumer.read(readTopic)
-    }
-  }
-
   @Test
   def testConsumption(): Unit = {
     val runner = new Runner
+    if (run) {
     runner.start()
     Thread.sleep(10000)
     // shouldn't do this, but consumers can otherwise run forever.
     runner.stop()
+    }
+  }
+
+  class Runner extends Thread {
+    override def run(): Unit = {
+      consumer.read(readTopic)
+    }
   }
 
 }
