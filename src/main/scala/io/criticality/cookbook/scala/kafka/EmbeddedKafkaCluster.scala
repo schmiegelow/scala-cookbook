@@ -45,7 +45,7 @@ case class EmbeddedKafkaCluster(zkConnection: String, baseProperties: Properties
   }
 
   private def constructBrokerList(ports: List[Integer]): String = {
-    ports.map(port => { "localhost:%," format port}).dropRight(1)
+    ports.map(port => { "localhost:%," format port}).mkString.dropRight(1)
   }
 
   def startup {
