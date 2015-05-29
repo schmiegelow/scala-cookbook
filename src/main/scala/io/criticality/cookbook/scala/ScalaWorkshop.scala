@@ -41,7 +41,7 @@ val bat = List("dtag", "Bla", "im", "google")
     for (name <- names if name.startsWith("J"))
     for (name <- names) println(name)
     val results = for (name <- names) yield (name takeRight 1)
-    println(names)
+    println(s" names : $names")
     println(results)
 
     def toInt(in: String): Option[Int] = {
