@@ -5,7 +5,7 @@ import scala.collection.mutable
 
 case class Foo(val bar : String)
 
-object Test {
+object Test extends App {
 val bat = List("dtag", "Bla", "im", "google")
     bat.filter( f => Character.isUpperCase(f.charAt(0)) )
     val intList = List(2,7,9,1,6,5,8,2,4,6,2,9,8)
@@ -81,4 +81,9 @@ val bat = List("dtag", "Bla", "im", "google")
     // update elements by reassigning them
     states("AK") = "Alaska, The Big State"
 
+    val seq = Seq[String]("bla", "blub", "blob")
+
+    println(scala.util.Random.shuffle(seq).head)
+    println(scala.util.Random.shuffle(seq).head)
+    println(scala.util.Random.shuffle(seq).head)
 }
