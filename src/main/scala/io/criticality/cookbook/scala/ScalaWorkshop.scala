@@ -1,5 +1,7 @@
 package io.criticality.cookbook.scala
 
+import java.io.IOException
+
 import scala.annotation.tailrec
 import scala.collection.mutable
 
@@ -82,7 +84,13 @@ val bat = List("dtag", "Bla", "im", "google")
     states("AK") = "Alaska, The Big State"
 
     val seq = Seq[String]("bla", "blub", "blob")
+    try {
+      throw new RuntimeException("bla")
+    } catch {
+      case e : IOException => println("IOE" + e.getLocalizedMessage)
 
+      case _ : Exception => println("unknown")
+    }
     println(scala.util.Random.shuffle(seq).head)
     println(scala.util.Random.shuffle(seq).head)
     println(scala.util.Random.shuffle(seq).head)
