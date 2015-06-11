@@ -6,15 +6,13 @@ import java.util.concurrent.TimeUnit
 import com.codahale.metrics.{MetricFilter, MetricRegistry}
 import com.codahale.metrics.graphite.{Graphite, GraphiteReporter}
 
-object MetricsSender {
-
-  val config = ConfigFactory.load()
+case class MetricsSender(host:String, port: Int, prefix: String) {
 
   val registry = new MetricRegistry()
 
-  val graphite = new Graphite(new InetSocketAddress(config.as[String]("graphite.host"), config.as[Int]("graphite.port")))
+  val graphite = new Graphite(new InetSocketAddress(host, port))
   val reporter = GraphiteReporter.forRegistry(registry)
-    .prefixedWith(config.as[String]("graphite.prefix"))
+    .prefixedWith(prefix)
     .convertRatesTo(TimeUnit.SECONDS)
     .convertDurationsTo(TimeUnit.MILLISECONDS)
     .filter(MetricFilter.ALL)
