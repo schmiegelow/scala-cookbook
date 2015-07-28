@@ -1,7 +1,9 @@
 package io.criticality.cookbook.scala.kafka
 
+import java.util.Properties
+
 import kafka.consumer.KafkaStream
-import org.junit.Test
+import org.junit.{AfterClass, BeforeClass, Test}
 
 /**
  * Created by e.schmiegelow on 15/04/15.
@@ -10,7 +12,22 @@ class KafkaTopicConsumerTest {
 
   val run = false
 
-  val consumer = KafkaTopicConsumer("records", 1, "test01", "localhost:2181")
+  val zkPort = EmbeddedUtilities.getAvailablePort
+  val zkTest = new EmbeddedZookeeper(zkPort, 100)
+  val kafkaTest = new EmbeddedKafkaCluster(s"localhost:$zkPort", new Properties(), List(9092))
+
+
+  @BeforeClass
+  def startupTestEnv() = {
+    zkTest.startup
+    kafkaTest.startup
+  }
+
+  @AfterClass
+  def shutdownTestEnv() = {
+    kafkaTest.shutdown
+    zkTest.shutdown
+  }
 
   def readTopic(stream : KafkaStream[Array[Byte], Array[Byte]]): Unit = {
     stream.iterator() foreach (msg => {
@@ -30,6 +47,8 @@ class KafkaTopicConsumerTest {
   }
 
   class Runner extends Thread {
+    val consumer = KafkaTopicConsumer("records", 1, "test01", s"localhost:${zkPort}")
+
     override def run(): Unit = {
       consumer.read(readTopic)
     }

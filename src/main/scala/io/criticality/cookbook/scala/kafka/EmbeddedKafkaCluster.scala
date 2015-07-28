@@ -45,7 +45,7 @@ case class EmbeddedKafkaCluster(zkConnection: String, baseProperties: Properties
   }
 
   private def constructBrokerList(ports: List[Integer]): String = {
-    ports.map(port => { "localhost:%," format port}).mkString.dropRight(1)
+    ports.map(port => { "localhost:%s," format port}).mkString.dropRight(1)
   }
 
   def startup {
@@ -86,6 +86,7 @@ case class EmbeddedKafkaCluster(zkConnection: String, baseProperties: Properties
   }
 
 
+
   def shutdown {
     for (broker <- brokers) {
       try {
@@ -111,17 +112,17 @@ case class EmbeddedKafkaCluster(zkConnection: String, baseProperties: Properties
   }
 
   override def toString: String = {
-    "EmbeddedKafkaCluster{'%s'}" format brokerList
+    s"EmbeddedKafkaCluster{'${brokerList}'}"
   }
 }
 
 class SystemTime extends Time {
   def milliseconds: Long = {
-    return System.currentTimeMillis
+    System.currentTimeMillis
   }
 
   def nanoseconds: Long = {
-    return System.nanoTime
+    System.nanoTime
   }
 
   def sleep(ms: Long) {
@@ -129,8 +130,8 @@ class SystemTime extends Time {
       Thread.sleep(ms)
     }
     catch {
-      case e: InterruptedException => {
-      }
+      case e: InterruptedException => println(e.getMessage)
+
     }
   }
 }
